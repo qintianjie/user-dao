@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.colorcc.user.mapper.UserMapper">
+	<select id="selectOne" parameterType="int" resultType="restUser">
+	 	<![CDATA[
+	 		SELECT ID, EMAIL, PASSWD, SALT, REGISTER_TIME as registerTime, STATUS
+  		 	  FROM USER
+  			 WHERE ID = #{id}
+	 	]]>
+	</select>
+	
+	<insert id="insertOne" parameterType="restUser" useGeneratedKeys="true" keyProperty="ID">
+		<![CDATA[
+			INSERT INTO USER (EMAIL, PASSWD, SALT, REGISTER_TIME, STATUS)
+			VALUES (#{email}, #{passwd}, #{salt}, #{registerTime}, #{status})
+		]]>
+	</insert>
+
+	 <update id="updateOne" parameterType="restUser">
+		<![CDATA[
+			UPDATE USER
+			SET EMAIL=#{email}, PASSWD=#{passwd}, SALT=#{salt}, REGISTER_TIME=#{registerTime}, STATUS=#{status}
+			WHERE ID = #{id}
+		]]>
+	</update>
+
+	<delete id="deleteOne" parameterType="int">
+		<![CDATA[
+			DELETE FROM USER WHERE ID = #{id}
+		]]>
+	</delete>
+	
+	<select id="findUserByEmail" parameterType="String" resultType="restUser">
+		<![CDATA[
+	 		SELECT ID, EMAIL, PASSWD, SALT, REGISTER_TIME as registerTime, STATUS
+  		 	  FROM USER
+  			 WHERE EMAIL = #{email}
+	 	]]>
+	</select>
+	
+	<delete id="deleteUsers" parameterType="java.util.HashMap">
+			DELETE FROM USER 
+			<where>
+				<if test="startUserId != null">
+					<![CDATA[
+						AND ID >= #{startUserId}
+					]]>
+				</if>
+				<if test="endUserId != null">
+					<![CDATA[
+						AND ID <= #{endUserId}
+					]]>
+				</if>
+			</where>
+	</delete>
+	
+	<select id="countUser" resultType="int">
+		SELECT count(ID) as counts FROM USER
+	</select>
+	
+	<select id="getUsers" parameterType="map" resultType="restUser">
+		<![CDATA[
+	 		SELECT ID, EMAIL, PASSWD, SALT, REGISTER_TIME as registerTime, STATUS
+  		 	  FROM USER
+  			  LIMIT #{startRow}, #{fetchRows}
+	 	]]>
+	</select>
+
+</mapper>

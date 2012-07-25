@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.colorcc.user.security.mapper.UserVOMapper">
+	<select id="selectOne" parameterType="int" resultType="restUserVO">
+	 	<![CDATA[
+  			SELECT u.ID, r.ID as roleId, r.ROLE FROM USER u
+				LEFT JOIN USER_ROLE ur ON  u.ID = ur.USER_ID
+				LEFT JOIN ROLE r on ur.ROLE_ID = r.ID
+				WHERE u.ID = #{id};
+	 	]]>
+	</select>
+	
+</mapper>

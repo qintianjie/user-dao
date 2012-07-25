@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.colorcc.user.security.mapper.RoleMapper">
+	<select id="selectOne" parameterType="int" resultType="restRole">
+	 	<![CDATA[
+  			SELECT ID, ROLE, DESCRIPTION 
+  				FROM ROLE
+  				WHERE ID = #{id}
+	 	]]>
+	</select>
+	
+	<insert id="insertOne" parameterType="restRole" useGeneratedKeys="true" keyProperty="ID">
+		<![CDATA[
+			INSERT INTO ROLE (ROLE, DESCRIPTION)
+			VALUES (#{role}, #{description})
+		]]>
+	</insert>
+
+	 <update id="updateOne" parameterType="restRole">
+		<![CDATA[
+			UPDATE ROLE
+			SET ROLE=#{role}, DESCRIPTION=#{description}
+			WHERE ID = #{id}
+		]]>
+	</update>
+
+	<delete id="deleteOne" parameterType="int">
+		<![CDATA[
+			DELETE FROM ROLE WHERE ID = #{id}
+		]]>
+	</delete>
+	
+	<select id="getRoleByName" parameterType="string" resultType="restRole">
+	 	<![CDATA[
+  			SELECT ID, ROLE, DESCRIPTION 
+  				FROM ROLE
+  				WHERE ROLE = #{roleName}
+	 	]]>
+	</select>
+	
+	<select id="getRolesForUser" parameterType="map" resultType="restRole">
+	 	<![CDATA[
+  			SELECT r.ID, r.ROLE, r.DESCRIPTION FROM USER u
+				LEFT JOIN USER_ROLE ur ON  u.ID = ur.USER_ID
+				LEFT JOIN ROLE r on ur.ROLE_ID = r.ID
+				WHERE u.ID = #{id}
+	 	]]>
+	</select>
+	
+</mapper>
